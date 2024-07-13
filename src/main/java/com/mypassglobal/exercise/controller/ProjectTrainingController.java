@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +23,17 @@ public class ProjectTrainingController {
     public ResponseEntity getWorkersForProject(@PathVariable Long projectId,
                                                @RequestParam(required = false) String qualificationName,
                                                @RequestParam(required = false) String trainingProgramName,
-                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "1") int page,
                                                @RequestParam(defaultValue = "5") int perPage) {
         List<Worker> workers = projectTrainingService.getWorkerDetailsForProjectId(projectId.toString(), qualificationName, trainingProgramName, page, perPage);
         if (!workers.isEmpty()) {
+
+            int start = (page-1) * perPage;
+            int end = Math.min(start + perPage, workers.size());
+
+            if (start > end) {
+                return (ResponseEntity) List.of();
+            }
 
             String nextPageUrl = "/mypass/v1/projects/" + projectId.toString() + "/workers", prevPageUrl = "/mypass/v1/projects/" + projectId.toString() + "/workers";
 
@@ -33,17 +41,16 @@ public class ProjectTrainingController {
             int totalPages = (int) Math.ceil((double) workers.size() / perPage);
             // Determine URLs for next and previous pages
             if (page < totalPages) {
-                nextPageUrl = nextPageUrl + "?page=" + (page + 1) + "&per_page=" + perPage;
+                nextPageUrl = (nextPageUrl + "?qualificationName=" + qualificationName + "&trainingProgramName=" + trainingProgramName + "&page=" + (page + 1) + "&per_page=" + perPage).replaceAll(" ","%20");
             }
             if (page > 1) {
-                prevPageUrl = prevPageUrl + "?page=" + (page - 1) + "&per_page=" + perPage;
+                prevPageUrl = (prevPageUrl + "?qualificationName=" + qualificationName + "&trainingProgramName=" + trainingProgramName + "&page=" + (page - 1) + "&per_page=" + perPage).replaceAll(" ","%20");
             }
             // Create metadata for pagination
             PaginationMetadata paginationMetadata = new PaginationMetadata(workers.size(), perPage, page, totalPages, nextPageUrl, prevPageUrl);
 
-
             // Create API response object with data and metadata
-            ApiResponse response = new ApiResponse(workers,paginationMetadata);
+            ApiResponse response = new ApiResponse(workers.subList(start, end), paginationMetadata);
             return ResponseEntity.ok(response);
         } else {
             throw new ResourceNotFoundException("Project ID not found");
