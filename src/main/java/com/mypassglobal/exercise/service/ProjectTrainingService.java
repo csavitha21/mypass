@@ -4,7 +4,10 @@ import com.mypassglobal.exercise.model.Project;
 import com.mypassglobal.exercise.model.Qualification;
 import com.mypassglobal.exercise.model.TrainingProgram;
 import com.mypassglobal.exercise.model.Worker;
+import com.mypassglobal.exercise.repository.ProjectRepo;
+import com.mypassglobal.exercise.repository.WorkerRepo;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,13 +16,19 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectTrainingService {
 
+    @Autowired
+    private WorkerRepo workerRepo;
+
+    @Autowired
+    private ProjectRepo projectRepo;
+
     private List<Project> projects;
 
     @PostConstruct
     public void loadData() {
 
         // 1
-        List<Qualification> qualifications11 = Arrays.asList(new Qualification("AWS Certified", "12/07/2023"),
+        /*List<Qualification> qualifications11 = Arrays.asList(new Qualification("AWS Certified", "12/07/2023"),
                 new Qualification("Java Certified", "12/07/2026"));
         List<TrainingProgram> trainingPrograms11 = Arrays.asList(new TrainingProgram(UUID.randomUUID().toString(), "Front-end development", "15/03/2024", "Completed"),
                 new TrainingProgram(UUID.randomUUID().toString(), "Back-end development", "15/12/2024", "In-Progress"));
@@ -85,11 +94,12 @@ public class ProjectTrainingService {
         Worker worker22 = new Worker(UUID.randomUUID().toString(), "Ira", qualifications22, trainingPrograms22, link);
 
         projects = Arrays.asList(new Project("100001", "WebDevelopment", Arrays.asList(worker11, worker12, worker13, worker14, worker15, worker16, worker17, worker18, worker19)),
-                new Project("100002", "Database", Arrays.asList(worker21, worker22)));
+                new Project("100002", "Database", Arrays.asList(worker21, worker22)));*/
     }
 
     public List<Worker> getWorkerDetailsForProjectId(String projectId, String qualificationName, String trainingProgramName, int page, int size) {
-        Optional<Project> project = projects.stream().filter(p -> p.getProjectID().equals(projectId)).findFirst();
+
+        Optional<Project> project = projectRepo.findById(Long.valueOf(projectId));
         if (project.isPresent()) {
             List<Worker> workerList = project.get().getWorkerList();
             List<Worker> filteredWorkers = workerList.stream()
@@ -110,7 +120,7 @@ public class ProjectTrainingService {
 
     public Optional<Object> getWorkerDetailsForProjectIdAndWorkerId(String workerId) {
         List<Worker> workers = projects.stream().flatMap(p -> p.getWorkerList().stream()).toList();
-        return Optional.ofNullable(workers.stream().filter(w -> w.getWorkerID().equals(workerId)));
+        return Optional.ofNullable(workers.stream().filter(w -> w.getWorkerId().equals(workerId)));
     }
 
 }

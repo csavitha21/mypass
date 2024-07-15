@@ -21,8 +21,8 @@ public class ProjectTrainingController {
 
     @GetMapping("/{projectId}/workers")
     public ResponseEntity getWorkersForProject(@PathVariable Long projectId,
-                                               @RequestParam(required = false) String qualificationName,
-                                               @RequestParam(required = false) String trainingProgramName,
+                                               @RequestParam(required = false, defaultValue = "") String qualificationName,
+                                               @RequestParam(required = false, defaultValue = "") String trainingProgramName,
                                                @RequestParam(defaultValue = "1") int page,
                                                @RequestParam(defaultValue = "5") int perPage) {
         List<Worker> workers = projectTrainingService.getWorkerDetailsForProjectId(projectId.toString(), qualificationName, trainingProgramName, page, perPage);
