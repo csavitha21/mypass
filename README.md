@@ -2,18 +2,17 @@
 Objective: Design an API endpoint that retrieves the current qualifications and
 completed training for workers assigned to a specific project.
 Considerations:
-● The API should be accessible through a standard protocol like HTTP (GET
+1. The API should be accessible through a standard protocol like HTTP (GET
 request).
-● The request should include the project identifier (e.g., project ID).
-● The response should be a structured format like JSON.
-● The response should include information for each worker assigned to the
-project:
-○ Worker ID
-○ Worker Name (optional)
-○ List of qualifications (e.g., qualification name, expiry date)
-○ List of completed training programs (e.g., program name, completion
-date)
-● Error handling should be implemented for invalid project IDs or other potential
+2. The request should include the project identifier (e.g., project ID).
+3. The response should be a structured format like JSON.
+4. The response should include information for each worker assigned to the project:
+   -  Worker ID
+   -  Worker Name (optional)
+   -  List of qualifications (e.g., qualification name, expiry date)
+   -  List of completed training programs (e.g., program name, completion
+       date)
+6. Error handling should be implemented for invalid project IDs or other potential
 issues.
 
 **Solution**
