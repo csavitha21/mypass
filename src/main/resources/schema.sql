@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS Qualification (
 CREATE TABLE IF NOT EXISTS Worker (
     workerId BIGINT AUTO_INCREMENT PRIMARY KEY,
     workerName VARCHAR(255),
-    href VARCHAR(255),
     qualificationId BIGINT,
     trainingId BIGINT,
     projectId BIGINT,

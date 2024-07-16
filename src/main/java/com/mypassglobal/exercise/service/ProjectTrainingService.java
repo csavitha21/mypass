@@ -1,23 +1,15 @@
 package com.mypassglobal.exercise.service;
 
 import com.mypassglobal.exercise.model.Project;
-import com.mypassglobal.exercise.model.Qualification;
-import com.mypassglobal.exercise.model.TrainingProgram;
 import com.mypassglobal.exercise.model.Worker;
 import com.mypassglobal.exercise.repository.ProjectRepo;
-import com.mypassglobal.exercise.repository.WorkerRepo;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjectTrainingService {
-
-    @Autowired
-    private WorkerRepo workerRepo;
 
     @Autowired
     private ProjectRepo projectRepo;
@@ -105,11 +97,11 @@ public class ProjectTrainingService {
             List<Worker> filteredWorkers = workerList.stream()
                     .filter(w -> {
                                 if (qualificationName != null && !qualificationName.isEmpty()) {
-                                    return w.getQualifications().stream().anyMatch(q -> q.getQualificationName().equals(qualificationName));
+                                    return w.getQualificationList().stream().anyMatch(q -> q.getQualificationName().equals(qualificationName));
                                 } else if (trainingProgramName != null && !trainingProgramName.isEmpty()) {
-                                    return w.getTrainingPrograms().stream().anyMatch(t -> t.getProgramName().equals(trainingProgramName));
+                                    return w.getTrainingProgramList().stream().anyMatch(t -> t.getProgramName().equals(trainingProgramName));
                                 } else {
-                                    return w.getTrainingPrograms().stream().anyMatch(t -> t.getStatus().equals("Completed"));
+                                    return w.getTrainingProgramList().stream().anyMatch(t -> t.getStatus().equals("Completed"));
                                 }
                             }
                     ).toList();
@@ -119,7 +111,7 @@ public class ProjectTrainingService {
     }
 
     public Optional<Object> getWorkerDetailsForProjectIdAndWorkerId(String workerId) {
-        List<Worker> workers = projects.stream().flatMap(p -> p.getWorkerList().stream()).toList();
+        List<Worker> workers = projectRepo.findAll().stream().flatMap(p -> p.getWorkerList().stream()).toList();
         return Optional.ofNullable(workers.stream().filter(w -> w.getWorkerId().equals(workerId)));
     }
 

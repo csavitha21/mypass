@@ -4,6 +4,11 @@ import com.mypassglobal.exercise.model.ApiResponse;
 import com.mypassglobal.exercise.model.PaginationMetadata;
 import com.mypassglobal.exercise.model.Worker;
 import com.mypassglobal.exercise.service.ProjectTrainingService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +19,27 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/mypass/v1/projects")
+@OpenAPIDefinition(
+        info = @Info(
+                title = "MyPass Projects",
+                version = "v1",
+                description = "This is exercise project",
+                contact = @Contact(
+                        name = "Savitha Chalapathy",
+                        email = "savithavinaykrishnan@gmail.com"
+                )
+        ),
+        extensions = {
+                @Extension(
+                        name = "sla",
+                        properties = {
+                                @ExtensionProperty(name = "uptime", value = "99.9%"),
+                                @ExtensionProperty(name = "responseTime", value = "under 100ms"),
+                                // Add more SLA-related properties as needed
+                        }
+                )
+        }
+)
 public class ProjectTrainingController {
 
     @Autowired
