@@ -5,7 +5,7 @@ DROP TABLE Worker IF EXISTS;
 CREATE TABLE IF NOT EXISTS TrainingProgram (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     programName VARCHAR(255),
-    completionDate VARCHAR(255),
+    completionDate DATE,
     status VARCHAR(255),
     workerId BIGINT
 );
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS TrainingProgram (
 CREATE TABLE IF NOT EXISTS Qualification (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     qualificationName VARCHAR(255),
-    expiryDate VARCHAR(255),
+    expiryDate DATE,
     workerId BIGINT
 );
 

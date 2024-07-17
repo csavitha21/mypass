@@ -1,8 +1,11 @@
 package com.mypassglobal.exercise.service;
 
 import com.mypassglobal.exercise.model.Project;
+import com.mypassglobal.exercise.model.Qualification;
 import com.mypassglobal.exercise.model.Worker;
 import com.mypassglobal.exercise.repository.ProjectRepo;
+import com.mypassglobal.exercise.repository.QualificationRepo;
+import com.mypassglobal.exercise.repository.WorkerRepo;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,12 @@ public class ProjectTrainingService {
 
     @Autowired
     private ProjectRepo projectRepo;
+
+    @Autowired
+    private WorkerRepo workerRepo;
+
+    @Autowired
+    private QualificationRepo qualificationRepo;
 
     private List<Project> projects;
 
@@ -89,7 +98,7 @@ public class ProjectTrainingService {
                 new Project("100002", "Database", Arrays.asList(worker21, worker22)));*/
     }
 
-    public List<Worker> getWorkerDetailsForProjectId(String projectId, String qualificationName, String trainingProgramName, int page, int size) {
+    public List<Worker> getWorkerDetailsForProjectId(String projectId, String qualificationName, String trainingProgramName) {
 
         Optional<Project> project = projectRepo.findById(Long.valueOf(projectId));
         if (project.isPresent()) {
@@ -97,7 +106,7 @@ public class ProjectTrainingService {
             List<Worker> filteredWorkers = workerList.stream()
                     .filter(w -> {
                                 if (qualificationName != null && !qualificationName.isEmpty()) {
-                                    return w.getQualificationList().stream().anyMatch(q -> q.getQualificationName().equals(qualificationName));
+                                    return w.getQualificationList().stream().anyMatch(q -> q.getName().equals(qualificationName));
                                 } else if (trainingProgramName != null && !trainingProgramName.isEmpty()) {
                                     return w.getTrainingProgramList().stream().anyMatch(t -> t.getProgramName().equals(trainingProgramName));
                                 } else {
@@ -113,6 +122,27 @@ public class ProjectTrainingService {
     public Optional<Object> getWorkerDetailsForProjectIdAndWorkerId(String workerId) {
         List<Worker> workers = projectRepo.findAll().stream().flatMap(p -> p.getWorkerList().stream()).toList();
         return Optional.ofNullable(workers.stream().filter(w -> w.getWorkerId().equals(workerId)));
+    }
+
+    public List<Worker> getWorkers(String qualificationName, String trainingProgramName){
+        if(qualificationName!=null && !qualificationName.isEmpty()) {
+            if(trainingProgramName!=null && !trainingProgramName.isEmpty()) {{
+                List<Worker> filteredList = workerRepo.findAll().stream().map(w -> new Worker(w, false, false)).toList();
+                return filteredList;
+            }}
+            else {
+                List<Worker> filteredList = workerRepo.findByQualification(qualificationName).stream().map(w -> new Worker(w, false, true)).toList();
+                return filteredList;
+            }
+        }
+        else  if(trainingProgramName!=null && !trainingProgramName.isEmpty()) {
+            List<Worker> filteredList = workerRepo.findByTrainingProgramName(trainingProgramName).stream().map(w -> new Worker(w, true, false)).toList();
+            return filteredList;
+        }
+        else{
+            List<Worker> filteredList = workerRepo.findAll().stream().map(w -> new Worker(w, false, false)).toList();
+            return filteredList;
+        }
     }
 
 }

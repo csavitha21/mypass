@@ -47,7 +47,7 @@ class ProjectTrainingControllerTest {
         worker.setQualificationList(List.of(qualification));
         final List<Worker> workers = List.of(worker);
         when(mockProjectTrainingService.getWorkerDetailsForProjectId("projectId", "qualificationName",
-                "trainingProgramName", 0, 0)).thenReturn(workers);
+                "trainingProgramName")).thenReturn(workers);
 
         // Run the test and verify the results
         mockMvc.perform(get("/mypass/v1/projects/{projectId}/workers", 0)
@@ -65,7 +65,7 @@ class ProjectTrainingControllerTest {
     void testGetWorkersForProject1_ProjectTrainingServiceReturnsNoItems() throws Exception {
         // Setup
         when(mockProjectTrainingService.getWorkerDetailsForProjectId("projectId", "qualificationName",
-                "trainingProgramName", 0, 0)).thenReturn(Collections.emptyList());
+                "trainingProgramName")).thenReturn(Collections.emptyList());
 
         // Run the test and verify the results
         mockMvc.perform(get("/mypass/v1/projects/{projectId}/workers", 0)

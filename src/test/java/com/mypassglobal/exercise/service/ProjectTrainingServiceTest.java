@@ -38,7 +38,7 @@ class ProjectTrainingServiceTest {
         final Worker worker = new Worker();
         worker.setWorkerId("workerId");
         final Qualification qualification = new Qualification();
-        qualification.setQualificationName("qualificationName");
+        qualification.setName("qualificationName");
         worker.setQualificationList(List.of(qualification));
         final TrainingProgram trainingProgram = new TrainingProgram();
         trainingProgram.setProgramName("programName");
@@ -51,7 +51,7 @@ class ProjectTrainingServiceTest {
         final Worker worker1 = new Worker();
         worker1.setWorkerId("workerId");
         final Qualification qualification1 = new Qualification();
-        qualification1.setQualificationName("qualificationName");
+        qualification1.setName("qualificationName");
         worker1.setQualificationList(List.of(qualification1));
         final TrainingProgram trainingProgram1 = new TrainingProgram();
         trainingProgram1.setProgramName("programName");
@@ -64,7 +64,7 @@ class ProjectTrainingServiceTest {
 
         // Run the test
         final List<Worker> result = projectTrainingServiceUnderTest.getWorkerDetailsForProjectId("0",
-                "qualificationName", "trainingProgramName", 0, 0);
+                "qualificationName", "trainingProgramName");
 
         // Verify the results
         assertThat(result).isEqualTo(expectedResult);
@@ -77,7 +77,7 @@ class ProjectTrainingServiceTest {
 
         // Run the test
         final List<Worker> result = projectTrainingServiceUnderTest.getWorkerDetailsForProjectId("0",
-                "qualificationName", "trainingProgramName", 0, 0);
+                "qualificationName", "trainingProgramName");
 
         // Verify the results
         assertThat(result).isEqualTo(Collections.emptyList());

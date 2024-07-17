@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
 
+import java.sql.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,10 +21,10 @@ public class Qualification {
     private String Id;
 
     @Column(name = "qualificationName")
-    private String qualificationName;
+    private String name;
 
     @Column(name = "expiryDate")
-    private String expiryDate;
+    private Date expiryDate;
 
     @ManyToOne
     @JoinColumn(name="workerId", nullable = false)

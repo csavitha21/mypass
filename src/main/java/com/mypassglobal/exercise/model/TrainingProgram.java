@@ -26,7 +26,7 @@ public class TrainingProgram {
     private String programName;
 
     @Column(name = "completionDate")
-    private String completionDate;
+    private Date completionDate;
 
     @Column(name = "status")
     private String status;

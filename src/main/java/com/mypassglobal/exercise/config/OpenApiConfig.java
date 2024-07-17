@@ -18,7 +18,7 @@ public class OpenApiConfig {
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("api")
-                .pathsToMatch("/mypass/v1/projects/**") // Adjust the path as per your API endpoints
+                .pathsToMatch("/mypass/v1/**") // Adjust the path as per your API endpoints
                 .build();
     }
 }
